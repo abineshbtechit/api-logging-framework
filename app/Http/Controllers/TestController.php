@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
@@ -14,11 +15,13 @@ class TestController extends Controller
         ]);
     }
 
-    public function posting(Request $request)
+     public function posting(Request $request)
     {
+        $student = Student::create($request->all());
+
         return response()->json([
             'message' => 'Student Created',
-            'data' => $request->all()
+            'data'    => $student
         ]);
     }
 

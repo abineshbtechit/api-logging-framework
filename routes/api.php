@@ -50,3 +50,11 @@ require __DIR__.'/logs.php';
 //filtering the logs
 
 // Route::get('/logs', [ApiLogController::class, 'index']);
+
+
+
+
+
+
+
+//For another application you need to change only api.php and your controller logic
