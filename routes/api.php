@@ -48,4 +48,4 @@ Route::delete('/deleting/{id}', [TestController::class, 'deleting'])->middleware
 
 //filtering the logs
 
-Route::get('/logs', [ApiLogController::class, 'index']);
+// Route::get('/logs', [ApiLogController::class, 'index']);
