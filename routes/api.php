@@ -27,6 +27,7 @@ Route::get('/getting', [TestController::class, 'getting'])->middleware('mid');
 Route::post('/posting', [TestController::class, 'posting'])->middleware('mid');
 Route::put('/putting/{id}', [TestController::class, 'putting'])->middleware('mid');
 Route::delete('/deleting/{id}', [TestController::class, 'deleting'])->middleware('mid');
+require __DIR__.'/logs.php';
 
 
 //fetch by the method
