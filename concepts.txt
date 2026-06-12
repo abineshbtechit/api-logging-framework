@@ -1,0 +1,1 @@
+Eloquent ORM is simply a way to interact with database using PHP code instead of SQL.

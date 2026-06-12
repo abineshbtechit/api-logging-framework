@@ -15,7 +15,7 @@ class TestController extends Controller
         ]);
     }
 
-     public function posting(Request $request)
+    public function posting(Request $request)
     {
         $student = Student::create($request->all());
 
@@ -27,19 +27,25 @@ class TestController extends Controller
 
     public function putting(Request $request, $id)
     {
-        return response()->json([
-            'message' => 'Student Updated',
-            'id' => $id,
-            'data' => $request->all()
-        ]);
+        $student = Student::findorFail($id);
+        $student->update($request->all());
+        return response()->json(
+            [
+                'message' => 'updated successfully',
+                'data' => $student,
+            ]
+        );
     }
 
     public function deleting($id)
     {
-        return response()->json([
-            'message' => 'Student Deleted',
-            'id' => $id
+        $student=Student::findorFail($id);
+        $student->delete();
+        return response([
+              'message'=>'deleted',
+              'id'=>$id
         ]);
+
     }
 
     // public function month($id)
