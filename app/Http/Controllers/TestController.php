@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class TestController extends Controller
 
@@ -15,15 +16,21 @@ class TestController extends Controller
         ]);
     }
 
-    public function posting(Request $request)
-    {
-        $student = Student::create($request->all());
+   
 
-        return response()->json([
-            'message' => 'Student Created',
-            'data'    => $student
-        ]);
-    }
+public function posting(Request $request)
+{
+    $student = Student::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
+
+    return response()->json([
+        'message' => 'Student Created',
+        'data' => $student
+    ]);
+}
 
     public function putting(Request $request, $id)
     {

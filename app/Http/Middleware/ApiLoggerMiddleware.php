@@ -20,6 +20,8 @@ class ApiLoggerMiddleware
             $responseTime = round((microtime(true) - $startTime) * 1000, 2);
 
             ApiLog::create([
+                'user_id' => $request->user()?->id,
+                'user_role' => $request->user()?->role,
                 'method' => $request->method(),
                 'endpoint' => $request->fullUrl(),
                 'request_headers' => $request->headers->all(),
@@ -41,6 +43,8 @@ class ApiLoggerMiddleware
         $responseTime = round((microtime(true) - $startTime) * 1000, 2);
 
         ApiLog::create([
+            'user_id' => $request->user()?->id,
+            'user_role' => $request->user()?->role,
             'method' => $request->method(),
             'endpoint' => $request->fullUrl(),
             'request_headers' => $request->headers->all(),

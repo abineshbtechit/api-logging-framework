@@ -8,6 +8,8 @@ class ApiLog extends Model
 {
      protected $table = 'api_logs';
     protected $fillable = [
+        'user_id',
+        'user_role',
         'method',
         'endpoint',
         'request_headers',
