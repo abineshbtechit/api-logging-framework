@@ -17,7 +17,7 @@ Route::middleware(['auth:sanctum', 'mid'])->group(function () {
     Route::get('/notes/{id}', [NoteController::class, 'show']);     // view a single note
 
     // Professor only: post/manage notes
-    Route::post('/notes', [NoteController::class, 'store']);        // professor posts a new note
+    Route::post('/note_c', [NoteController::class, 'store']);        // professor posts a new note
     Route::put('/notes_u/{id}', [NoteController::class, 'update']);   // professor edits a note
     Route::delete('/notes_d/{id}', [NoteController::class, 'destroy']); // professor deletes a note
 });
