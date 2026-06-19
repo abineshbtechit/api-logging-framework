@@ -20,10 +20,18 @@ class TestController extends Controller
 
 public function posting(Request $request)
 {
+    $request->validate([
+    'name' => 'required',
+    'email' => 'required|email|unique:students',
+    'password' => 'required|min:6',
+    'role' => 'required|in:student,professor'
+]);
+
     $student = Student::create([
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($request->password),
+        'role' => $request->input('role')
     ]);
 
     return response()->json([
