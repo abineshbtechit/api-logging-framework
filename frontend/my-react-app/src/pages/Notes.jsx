@@ -38,8 +38,7 @@ export default function Notes() {
             <p>{note.content}</p>
 
             <p>
-              <strong>Author:</strong>{" "}
-              {note.user ? note.user.name : "Unknown"}
+              <strong>Author:</strong> {note.user ? note.user.name : "Unknown"}
             </p>
           </div>
         ))

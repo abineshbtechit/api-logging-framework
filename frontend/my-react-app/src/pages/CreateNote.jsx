@@ -63,9 +63,7 @@ export default function CreateNote() {
 
         <br />
 
-        <button type="submit">
-          Create Note
-        </button>
+        <button type="submit">Create Note</button>
       </form>
     </div>
   );

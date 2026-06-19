@@ -7,7 +7,8 @@ function Dashboard() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    api.get("/me")
+    api
+      .get("/me")
       .then((res) => {
         setUser(res.data.user);
       })
@@ -31,13 +32,9 @@ function Dashboard() {
     <div>
       <h2>Dashboard</h2>
 
-      {user?.role === "professor" && (
-        <h3>Professor Dashboard</h3>
-      )}
+      {user?.role === "professor" && <h3>Professor Dashboard</h3>}
 
-      {user?.role === "student" && (
-        <h3>Student Dashboard</h3>
-      )}
+      {user?.role === "student" && <h3>Student Dashboard</h3>}
 
       {!user?.role && (
         <h3>Dashboard data is available, but no role-specific view matched.</h3>

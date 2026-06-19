@@ -1,3 +1,3 @@
 export default function EditNote() {
-	return <div>Edit Note</div>;
+  return <div>Edit Note</div>;
 }
