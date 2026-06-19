@@ -16,7 +16,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
 
         // Global API logger middleware
-        \App\Http\Middleware\ApiLoggerMiddleware::class,
+        // \App\Http\Middleware\ApiLoggerMiddleware::class,
     ];
 
     protected $middlewareGroups = [

@@ -122,26 +122,24 @@ h3 {
 .navbar button {
   margin-left: auto;
   padding: 8px 12px;
-  background-color: #ef4444;
+  background-color: #eb252c;
   color: #fff;
   border-radius: 8px;
   border: none;
-  cursor: pointer;
 }
 
 .navbar button:hover {
-  background-color: #dc2626;
+  background-color: #1e40af;
 }
 
-/* Delete button used in notes list */
 .btn-delete {
-  margin-top: 8px;
-  padding: 8px 12px;
-  background-color: #ef4444;
-  color: #fff;
-  border-radius: 8px;
+  padding: 10px 16px;
   border: none;
+  border-radius: 5px;
+  background-color: #ef4444;
+  color: white;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .btn-delete:hover {
