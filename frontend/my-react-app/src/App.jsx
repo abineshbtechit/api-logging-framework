@@ -6,11 +6,13 @@ import Notes from "./pages/Notes";
 import CreateNote from "./pages/CreateNote";
 import EditNote from "./pages/EditNote";
 import Navbar from "./components/Navbar";
+import DeleteNote from "./pages/DeleteNote";
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
+
 
       <Routes>
         <Route path="/" element={<Login />} />
@@ -18,7 +20,10 @@ function App() {
         <Route path="/notes" element={<Notes />} />
         <Route path="/create-note" element={<CreateNote />} />
         <Route path="/edit-note/:id" element={<EditNote />} />
+         {/* <Route path="/delete-note/:id" element={<DeleteNote />} /> */}
       </Routes>
+
+
     </BrowserRouter>
   );
 }

@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateNote() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [role, setRole] = useState("");
 
   const navigate = useNavigate();
+  useEffect(() => {
+  api.get("/me").then((res) => setRole(res.data.user.role));
+}, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

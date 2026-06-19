@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/axios";
+import { Link } from "react-router-dom";
 
 export default function Notes() {
   const [notes, setNotes] = useState([]);
@@ -16,6 +17,27 @@ export default function Notes() {
       console.log(error);
     }
   };
+
+  const handleDelete = async (id) => {
+  const confirmDelete = window.confirm("Are you sure you want to delete this note?");
+
+  if (!confirmDelete) return;
+
+  try {
+    await api.delete(`/notes_d/${id}`);
+
+    alert("Note deleted successfully");
+
+    setNotes(notes.filter((note) => note.id !== id));
+  } catch (error) {
+    console.log(error);
+    if (error.response && error.response.data && error.response.data.message) {
+      alert(`Failed to delete note: ${error.response.data.message}`);
+    } else {
+      alert("Failed to delete note");
+    }
+  }
+};
 
   return (
     <div>
@@ -40,6 +62,9 @@ export default function Notes() {
             <p>
               <strong>Author:</strong> {note.user ? note.user.name : "Unknown"}
             </p>
+            <Link to={`/edit-note/${note.id}`}>Edit</Link>
+            <br />
+            <button className="btn-delete" onClick={() => handleDelete(note.id)}>Delete</button>
           </div>
         ))
       )}

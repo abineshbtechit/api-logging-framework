@@ -15,19 +15,12 @@ function Navbar() {
   }, []);
 
   return (
-    <nav
-      style={{
-        display: "flex",
-        gap: "20px",
-        padding: "15px",
-        backgroundColor: "#f4f4f4",
-      }}
-    >
+    <nav className="navbar">
       <Link to="/dashboard">Dashboard</Link>
 
       <Link to="/notes">Notes</Link>
 
-      {user?.role === "professor" && <Link to="/create-note">Create Note</Link>}
+      <Link to="/create-note">Create Note</Link>
 
       <button onClick={logout}>Logout</button>
     </nav>
