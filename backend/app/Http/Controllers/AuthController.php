@@ -28,8 +28,8 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        Mail::to($user->email)->send(new LoginAlertMail($user));
-
+       Mail::to($user->email)->queue(new LoginAlertMail($user));
+       
         return response()->json([
             'message' => 'Login Successful',
             'token' => $token,

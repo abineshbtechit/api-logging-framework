@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Jobs\StoreApiLogJob;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ class ApiLoggerMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
+        // dd("successs");
         $startTime = microtime(true);
 
         try {
@@ -19,7 +21,7 @@ class ApiLoggerMiddleware
         } catch (Throwable $e) {
             $responseTime = round((microtime(true) - $startTime) * 1000, 2);
 
-            ApiLog::create([
+            StoreApiLogJob::dispatch([
                 'user_id' => $request->user()?->id,
                 'user_role' => $request->user()?->role,
                 'method' => $request->method(),
@@ -42,7 +44,7 @@ class ApiLoggerMiddleware
 
         $responseTime = round((microtime(true) - $startTime) * 1000, 2);
 
-        ApiLog::create([
+        StoreApiLogJob::dispatch([
             'user_id' => $request->user()?->id,
             'user_role' => $request->user()?->role,
             'method' => $request->method(),

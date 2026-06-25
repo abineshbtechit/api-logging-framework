@@ -3,9 +3,10 @@
 namespace App\Mail;
 
 use App\Models\Student;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 
-class LoginAlertMail extends Mailable
+class LoginAlertMail extends Mailable implements ShouldQueue
 {
     public Student $student;
 
