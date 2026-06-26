@@ -63,6 +63,9 @@ return [
             ]) : [],
         ],
 
+
+
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
@@ -78,6 +81,23 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'log_pgsql' => [
+            'driver' => 'pgsql',
+            'host' => env('LOG_DB_HOST', '127.0.0.1'),
+            'port' => env('LOG_DB_PORT', '5432'),
+            'database' => env('LOG_DB_DATABASE'),
+            'username' => env('LOG_DB_USERNAME'),
+            'password' => env('LOG_DB_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
+
+
+        
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
@@ -125,7 +145,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
         ],
 
         'default' => [

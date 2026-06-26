@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('api_logs', function (Blueprint $table) {
+        Schema::connection('log_pgsql')->create('api_logs', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('user_role')->nullable();
             $table->id();
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('api_logs');
+        Schema::connection('log_pgsql')->dropIfExists('api_logs');
     }
 };
