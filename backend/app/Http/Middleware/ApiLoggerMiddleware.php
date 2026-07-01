@@ -2,26 +2,27 @@
 
 namespace App\Http\Middleware;
 
-use App\Jobs\StoreApiLogJob;
 use Closure;
+use Throwable;
+use App\Models\ApiLog;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\ApiLog;
-use Throwable;
 
 class ApiLoggerMiddleware
 {
+    protected array $logData = [];
+
     public function handle(Request $request, Closure $next): Response
     {
-        // dd("successs");
         $startTime = microtime(true);
 
         try {
             $response = $next($request);
         } catch (Throwable $e) {
+
             $responseTime = round((microtime(true) - $startTime) * 1000, 2);
 
-            StoreApiLogJob::dispatch([
+            $this->logData = [
                 'user_id' => $request->user()?->id,
                 'user_role' => $request->user()?->role,
                 'method' => $request->method(),
@@ -37,14 +38,14 @@ class ApiLoggerMiddleware
                     'line' => $e->getLine(),
                 ],
                 'response_time' => $responseTime,
-            ]);
+            ];
 
             throw $e;
         }
 
         $responseTime = round((microtime(true) - $startTime) * 1000, 2);
 
-        StoreApiLogJob::dispatch([
+        $this->logData = [
             'user_id' => $request->user()?->id,
             'user_role' => $request->user()?->role,
             'method' => $request->method(),
@@ -58,8 +59,15 @@ class ApiLoggerMiddleware
                 'raw_response' => $response->getContent()
             ],
             'response_time' => $responseTime,
-        ]);
+        ];
 
         return $response;
+    }
+
+    public function terminate(Request $request, Response $response): void
+    {
+        if (!empty($this->logData)) {
+            ApiLog::create($this->logData);
+        }
     }
 }
