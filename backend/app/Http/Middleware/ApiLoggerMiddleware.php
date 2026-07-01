@@ -7,6 +7,7 @@ use Throwable;
 use App\Models\ApiLog;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Log;
 
 class ApiLoggerMiddleware
 {
@@ -40,6 +41,12 @@ class ApiLoggerMiddleware
                 'response_time' => $responseTime,
             ];
 
+            try {
+                ApiLog::create($this->logData);
+            } catch (\Throwable $ex) {
+                Log::error('Failed to write API log (exception): ' . $ex->getMessage());
+            }
+
             throw $e;
         }
 
@@ -61,13 +68,17 @@ class ApiLoggerMiddleware
             'response_time' => $responseTime,
         ];
 
+        try {
+            ApiLog::create($this->logData);
+        } catch (\Throwable $ex) {
+            Log::error('Failed to write API log: ' . $ex->getMessage());
+        }
+
         return $response;
     }
 
     public function terminate(Request $request, Response $response): void
     {
-        if (!empty($this->logData)) {
-            ApiLog::create($this->logData);
-        }
+        // Left intentionally empty — logging occurs during handle() to ensure writes
     }
 }
