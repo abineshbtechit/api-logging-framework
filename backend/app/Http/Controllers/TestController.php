@@ -16,29 +16,29 @@ class TestController extends Controller
         ]);
     }
 
-   
 
-public function posting(Request $request)
-{
-    $request->validate([
-    'name' => 'required',
-    'email' => 'required|email|unique:students',
-    'password' => 'required|min:6',
-    'role' => 'required|in:student,professor'
-]);
 
-    $student = Student::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'role' => $request->input('role')
-    ]);
+    public function posting(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:students',
+            'password' => 'required|min:6',
+            'role' => 'required|in:student,professor'
+        ]);
 
-    return response()->json([
-        'message' => 'Student Created',
-        'data' => $student
-    ]);
-}
+        $student = Student::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->input('role')
+        ]);
+
+        return response()->json([
+            'message' => 'Student Created',
+            'data' => $student
+        ]);
+    }
 
     public function putting(Request $request, $id)
     {
@@ -54,13 +54,12 @@ public function posting(Request $request)
 
     public function deleting($id)
     {
-        $student=Student::findorFail($id);
+        $student = Student::findorFail($id);
         $student->delete();
         return response([
-              'message'=>'deleted',
-              'id'=>$id
+            'message' => 'deleted',
+            'id' => $id
         ]);
-
     }
 
     // public function month($id)
