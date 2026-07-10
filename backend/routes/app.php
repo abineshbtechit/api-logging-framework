@@ -5,9 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NoteController;
 
 // ---- Login / authentication ----
-Route::post('/login', [AuthController::class, 'login'])->middleware('mid');
-Route::post('/logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum', 'mid']);
-Route::get('/me', [AuthController::class, 'me'])->middleware(['auth:sanctum', 'mid']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum']);
+Route::get('/me', [AuthController::class, 'me'])->middleware(['auth:sanctum']);
 
 // ---- Notes ----
 Route::middleware(['auth:sanctum'])->group(function () {
