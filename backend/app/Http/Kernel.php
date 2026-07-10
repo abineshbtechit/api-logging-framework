@@ -6,7 +6,23 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
+    /**
+     * Global middleware.
+     *
+     * These middleware run for every HTTP request.
+     */
     protected $middleware = [
+
+        /*
+         * Keep ApiLoggerMiddleware first so it can capture:
+         * 401 Unauthorized
+         * 403 Forbidden
+         * 404 Not Found
+         * 422 Validation errors
+         * 500 Server errors
+         */
+        \App\Http\Middleware\ApiLoggerMiddleware::class,
+
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
@@ -16,6 +32,9 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
+    /**
+     * Middleware groups.
+     */
     protected $middlewareGroups = [
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
@@ -29,10 +48,14 @@ class Kernel extends HttpKernel
         'api' => [
             \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\ApiLoggerMiddleware::class,
+
+            // ApiLoggerMiddleware removed from here
         ],
     ];
 
+    /**
+     * Middleware aliases.
+     */
     protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
@@ -48,6 +71,7 @@ class Kernel extends HttpKernel
 
         // Custom middleware
         'month' => \App\Http\Middleware\MonthNum::class,
-        'mid' => \App\Http\Middleware\ApiLoggerMiddleware::class,
+
+        // 'mid' alias removed because logger is now global
     ];
 }

@@ -23,10 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //CRUD operation Sample Data
-Route::get('/getting', [TestController::class, 'getting'])->middleware('mid');
-Route::post('/posting', [TestController::class, 'posting'])->middleware('mid');
-Route::put('/putting/{id}', [TestController::class, 'putting'])->middleware('mid');
-Route::delete('/deleting/{id}', [TestController::class, 'deleting'])->middleware('mid');
+Route::get('/getting', [TestController::class, 'getting']);
+Route::post('/posting', [TestController::class, 'posting']);
+Route::put('/putting/{id}', [TestController::class, 'putting']);
+Route::delete('/deleting/{id}', [TestController::class, 'deleting']);
 require __DIR__.'/logs.php';
 require __DIR__.'/app.php';
 

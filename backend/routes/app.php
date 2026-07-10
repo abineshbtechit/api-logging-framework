@@ -10,7 +10,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware(['auth:san
 Route::get('/me', [AuthController::class, 'me'])->middleware(['auth:sanctum', 'mid']);
 
 // ---- Notes ----
-Route::middleware(['auth:sanctum', 'mid'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     // Student & professor: view notes
     Route::get('/notes', [NoteController::class, 'index']);        // list all notes (student dashboard feed)
