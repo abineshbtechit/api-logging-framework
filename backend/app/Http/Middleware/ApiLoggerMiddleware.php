@@ -6,15 +6,15 @@ use Closure;
 use Throwable;
 use App\Models\ApiLog;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApiLoggerMiddleware
 {
-    protected array $logData = [];
-
     public function handle(Request $request, Closure $next): Response
     {
+        Log::info('ApiLogger handle running');
+
         $startTime = microtime(true);
 
         try {
@@ -23,7 +23,7 @@ class ApiLoggerMiddleware
 
             $responseTime = round((microtime(true) - $startTime) * 1000, 2);
 
-            $this->logData = [
+            $logData = [
                 'user_id' => $request->user()?->id,
                 'user_role' => $request->user()?->role,
                 'method' => $request->method(),
@@ -42,9 +42,11 @@ class ApiLoggerMiddleware
             ];
 
             try {
-                ApiLog::create($this->logData);
-            } catch (\Throwable $ex) {
-                Log::error('Failed to write API log (exception): ' . $ex->getMessage());
+                ApiLog::create($logData);
+            } catch (Throwable $ex) {
+                Log::error('Failed to write API log exception', [
+                    'error' => $ex->getMessage()
+                ]);
             }
 
             throw $e;
@@ -52,7 +54,9 @@ class ApiLoggerMiddleware
 
         $responseTime = round((microtime(true) - $startTime) * 1000, 2);
 
-        $this->logData = [
+        $content = $response->getContent();
+
+        $logData = [
             'user_id' => $request->user()?->id,
             'user_role' => $request->user()?->role,
             'method' => $request->method(),
@@ -62,23 +66,39 @@ class ApiLoggerMiddleware
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
             'status_code' => $response->getStatusCode(),
-            'response_body' => json_decode($response->getContent(), true) ?? [
-                'raw_response' => $response->getContent()
+            'response_body' => json_decode($content, true) ?? [
+                'raw_response' => $content
             ],
             'response_time' => $responseTime,
         ];
 
-        try {
-            ApiLog::create($this->logData);
-        } catch (\Throwable $ex) {
-            Log::error('Failed to write API log: ' . $ex->getMessage());
-        }
+        $request->attributes->set('api_log_data', $logData);
+
+        Log::info('API log data set', $logData);
 
         return $response;
     }
 
     public function terminate(Request $request, Response $response): void
     {
-        // Left intentionally empty — logging occurs during handle() to ensure writes
+        Log::info('ApiLogger terminate running');
+
+        $logData = $request->attributes->get('api_log_data', []);
+
+        Log::info('Log data before insert', $logData);
+
+        if (!empty($logData)) {
+            try {
+                $log = ApiLog::create($logData);
+
+                Log::info('API log inserted successfully', [
+                    'id' => $log->id
+                ]);
+            } catch (Throwable $ex) {
+                Log::error('Failed to write API log in terminate', [
+                    'error' => $ex->getMessage()
+                ]);
+            }
+        }
     }
 }

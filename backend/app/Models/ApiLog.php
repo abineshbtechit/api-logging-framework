@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ApiLog extends Model
 {
-    protected $connection = 'log_pgsql';
+     protected $connection = 'log_pgsql';
     protected $table = 'api_logs';
     protected $fillable = [
         'user_id',
