@@ -137,19 +137,16 @@ Log Database (PostgreSQL, log_pgsql connection) — api_logs
     <td align="center">
       <img src="images/image%205.png" alt="Screenshot 5" /><br/>
       <b>Notes Dashboard</b><br/>
-     
     </td>
   </tr>
   <tr>
     <td align="center">
       <img src="images/image%203.png" alt="Screenshot 3" /><br/>
       <b>Student CRUD</b><br/>
-      
     </td>
     <td align="center">
       <img src="images/image%204.png" alt="Screenshot 4" /><br/>
       <b>create Notes</b><br/>
-     
     </td>
   </tr>
 </table>
