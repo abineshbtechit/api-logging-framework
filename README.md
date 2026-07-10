@@ -22,6 +22,7 @@
 - [Overview](#overview)
 - [Tech Stack](#tech-stack)
 - [System Architecture](#system-architecture)
+- [Screenshots](#screenshots)
 - [Modules](#modules)
 - [Local Setup](#local-setup)
 - [Environment Variables](#environment-variables)
@@ -106,6 +107,52 @@ Log Database (PostgreSQL, log_pgsql connection) — api_logs
 ```
 
 **Why this matters:** because `ApiLoggerMiddleware` is registered globally rather than inside a route or group, it runs on *every* request — including ones that never reach the controller (401, 403, 404). The log write itself happens in `terminate()`, after the client already has its response, so logging adds zero perceived latency.
+
+&nbsp;
+
+<div align="center">
+
+**System Architecture Diagram**
+
+![Architecture](images/Architecture.png)
+
+</div>
+
+&nbsp;
+
+---
+
+&nbsp;
+
+## Screenshots
+
+> *A visual walkthrough of the application.*
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/image%201.png" alt="Screenshot 1" /><br/>
+      <b>Student dashboard</b><br/>
+    </td>
+    <td align="center">
+      <img src="images/image%205.png" alt="Screenshot 5" /><br/>
+      <b>Notes Dashboard</b><br/>
+     
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/image%203.png" alt="Screenshot 3" /><br/>
+      <b>Student CRUD</b><br/>
+      
+    </td>
+    <td align="center">
+      <img src="images/image%204.png" alt="Screenshot 4" /><br/>
+      <b>create Notes</b><br/>
+     
+    </td>
+  </tr>
+</table>
 
 &nbsp;
 
