@@ -11,10 +11,13 @@ A Laravel + React application with centralized API request/response logging, log
 
 ## What's Implemented
 
-### 1. Automatic API Logging
-- `ApiLoggerMiddleware` (global) logs every request/response and uncaught exception after the response is sent (`terminate()`).
+### 1. Automatic API Logging (Zero Response-Time Impact)
+- `ApiLoggerMiddleware` (global) uses Laravel's **terminable middleware** (`handle()` + `terminate()`):
+  1. `handle()` starts a timer, lets the controller run, builds the log payload, and attaches it to the request.
+  2. **The response is sent to the client immediately.**
+  3. `terminate()` runs **after** the response is sent, writing the log to `api_logs` (`log_pgsql`) so logging never slows down the customer's response time.
+- **Queueing (`StoreApiLogJob` + `jobs` table):** A queued job `App\Jobs\StoreApiLogJob` (`ShouldQueue`) and `jobs` table migration are also included for async DB writes via `php artisan queue:work` (currently `terminate()` calls `ApiLog::create($logData)` directly; swap to `StoreApiLogJob::dispatch($logData)` with `QUEUE_CONNECTION=database` to queue inserts).
 - Captures: `user_id`, `user_role`, `method`, `endpoint`, `request_headers`, `request_body`, `response_body`, `status_code`, `response_time`, `ip_address`, `user_agent`.
-- Stored in `api_logs` on the `log_pgsql` connection.
 
 ### 2. Log Query API
 - `GET /api/logs` (`ApiLogController@index`)
