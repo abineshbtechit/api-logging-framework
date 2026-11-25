@@ -51,3 +51,4 @@ public function index(Request $request)
     return response()->json($query->latest()->get()); // ✅
 }
 }
+   

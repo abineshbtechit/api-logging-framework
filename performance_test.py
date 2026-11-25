@@ -12,7 +12,7 @@ headers = {
     "Accept": "application/json"
 }
 
-total_requests = 50
+total_requests = 100
 success = 0
 failed = 0
 response_times = []

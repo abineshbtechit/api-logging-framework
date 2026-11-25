@@ -51,7 +51,6 @@ class ApiLoggerMiddleware
 
             throw $e;
         }
-
         $responseTime = round((microtime(true) - $startTime) * 1000, 2);
 
         $content = $response->getContent();
