@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Throwable;
-use App\Models\ApiLog;
+use App\Jobs\StoreApiLogJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +13,6 @@ class ApiLoggerMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        Log::info('ApiLogger handle running');
-
         $startTime = microtime(true);
 
         try {
@@ -42,9 +40,9 @@ class ApiLoggerMiddleware
             ];
 
             try {
-                ApiLog::create($logData);
+                StoreApiLogJob::dispatch($logData)->onQueue('api-logs');
             } catch (Throwable $ex) {
-                Log::error('Failed to write API log exception', [
+                Log::error('Failed to queue API log exception', [
                     'error' => $ex->getMessage()
                 ]);
             }
@@ -73,28 +71,18 @@ class ApiLoggerMiddleware
 
         $request->attributes->set('api_log_data', $logData);
 
-        Log::info('API log data set', $logData);
-
         return $response;
     }
 
     public function terminate(Request $request, Response $response): void
     {
-        Log::info('ApiLogger terminate running');
-
         $logData = $request->attributes->get('api_log_data', []);
-
-        Log::info('Log data before insert', $logData);
 
         if (!empty($logData)) {
             try {
-                $log = ApiLog::create($logData);
-
-                Log::info('API log inserted successfully', [
-                    'id' => $log->id
-                ]);
+                StoreApiLogJob::dispatch($logData)->onQueue('api-logs');
             } catch (Throwable $ex) {
-                Log::error('Failed to write API log in terminate', [
+                Log::error('Failed to queue API log in terminate', [
                     'error' => $ex->getMessage()
                 ]);
             }

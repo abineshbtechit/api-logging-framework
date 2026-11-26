@@ -78,12 +78,21 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => 'prefer',
+            'sslmode' => env('DB_SSLMODE', 'prefer'),
         ],
 
         'log_pgsql' => [
             'driver' => 'pgsql',
-            'host' => env('LOG_DB_HOST', '127.0.0.1'),
+            'read' => [
+                'host' => array_values(array_filter(array_map(
+                    'trim',
+                    explode(',', env('LOG_DB_READ_HOSTS', env('LOG_DB_HOST', '127.0.0.1')))
+                ))),
+            ],
+            'write' => [
+                'host' => [env('LOG_DB_WRITE_HOST', env('LOG_DB_HOST', '127.0.0.1'))],
+            ],
+            'sticky' => false,
             'port' => env('LOG_DB_PORT', '5432'),
             'database' => env('LOG_DB_DATABASE'),
             'username' => env('LOG_DB_USERNAME'),
@@ -92,7 +101,7 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => 'prefer',
+            'sslmode' => env('LOG_DB_SSLMODE', 'prefer'),
         ],
 
 
