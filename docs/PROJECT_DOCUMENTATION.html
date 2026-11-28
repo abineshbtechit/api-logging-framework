@@ -3,37 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API Logging Framework — Project Documentation</title>
+  <title>API Logging Framework — Clear Project Guide</title>
   <style>
     :root {
       --bg: #0b0f17;
       --surface: #121826;
-      --surface-2: #192134;
-      --border: #26324b;
-      --text: #e6edf7;
-      --muted: #9aa8c7;
+      --surface-2: #182235;
+      --border: #26334d;
+      --text: #eef3fb;
+      --muted: #9fb0cf;
       --accent: #38bdf8;
-      --accent-2: #34d399;
-      --warn: #fbbf24;
-      --code-bg: #090d14;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --red: #f87171;
+      --code-bg: #080c13;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
-      padding: 36px 20px 64px;
+      line-height: 1.65;
+      padding: 32px 18px 64px;
     }
-    .container { max-width: 1040px; margin: 0 auto; }
+    .container { max-width: 1060px; margin: 0 auto; }
+
+    /* Header */
     header {
-      background: linear-gradient(135deg, #131c2e 0%, #0f172a 100%);
+      background: linear-gradient(135deg, #131e33 0%, #0f172a 100%);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 32px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
-    .badge {
+    .pill {
       display: inline-block;
       font-size: 12px;
       font-weight: 600;
@@ -42,27 +45,35 @@
       color: var(--accent);
       background: rgba(56, 189, 248, 0.12);
       border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 4px 10px;
+      padding: 4px 12px;
       border-radius: 999px;
       margin-bottom: 12px;
     }
-    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
-    .subtitle { color: var(--muted); font-size: 1rem; max-width: 720px; }
+    h1 { font-size: 2rem; font-weight: 700; margin-bottom: 10px; }
+    .tldr {
+      background: rgba(52, 211, 153, 0.08);
+      border-left: 3px solid var(--green);
+      padding: 12px 16px;
+      border-radius: 0 10px 10px 0;
+      color: #dbeafe;
+      font-size: 0.96rem;
+      margin-top: 10px;
+    }
 
     .metrics {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 14px;
-      margin-top: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 22px;
     }
     .metric {
       background: var(--surface-2);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 16px;
+      padding: 15px 16px;
     }
-    .metric-val { font-size: 1.5rem; font-weight: 700; color: var(--accent-2); }
-    .metric-lbl { font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
+    .metric-val { font-size: 1.45rem; font-weight: 700; color: var(--green); }
+    .metric-lbl { font-size: 0.84rem; color: var(--muted); margin-top: 3px; }
 
     section { margin-bottom: 28px; }
     h2 {
@@ -72,17 +83,18 @@
       align-items: center;
       gap: 10px;
     }
-    h2 span.num {
+    .num {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 8px;
       background: rgba(56, 189, 248, 0.15);
       color: var(--accent);
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       font-weight: 700;
+      flex-shrink: 0;
     }
 
     .card {
@@ -92,87 +104,123 @@
       padding: 22px;
     }
 
-    .flow {
+    /* Step-by-step Flow */
+    .flow-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 14px;
     }
-    .step {
+    .flow-item {
       background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      position: relative;
+      border-radius: 12px;
+      padding: 16px;
+      min-width: 0;
     }
-    .step-title { font-weight: 600; font-size: 0.92rem; color: var(--accent); margin-bottom: 4px; }
-    .step-desc { font-size: 0.84rem; color: var(--muted); }
+    .flow-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+    .flow-title { font-weight: 600; font-size: 0.98rem; margin-bottom: 4px; }
+    .flow-desc { font-size: 0.88rem; color: var(--muted); }
 
+    /* Requirement Cards */
     .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 16px;
     }
-
     .req-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 20px;
+      min-width: 0;
     }
     .req-head {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
-    .req-title { font-weight: 600; font-size: 1rem; }
+    .req-title { font-weight: 600; font-size: 1.02rem; }
     .done-pill {
       flex-shrink: 0;
       font-size: 11px;
       font-weight: 700;
-      color: var(--accent-2);
+      color: var(--green);
       background: rgba(52, 211, 153, 0.12);
       border: 1px solid rgba(52, 211, 153, 0.3);
-      padding: 3px 9px;
+      padding: 3px 10px;
       border-radius: 999px;
     }
-    .req-card p { font-size: 0.9rem; color: var(--muted); margin-bottom: 8px; }
-    .req-card ul { padding-left: 18px; font-size: 0.88rem; color: var(--text); }
-    .req-card li { margin-bottom: 4px; }
+    .kv { font-size: 0.88rem; margin-bottom: 7px; color: var(--muted); }
+    .kv strong { color: var(--text); }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-    }
+    /* Tables */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
     th, td {
       text-align: left;
       padding: 11px 12px;
       border-bottom: 1px solid var(--border);
+      vertical-align: top;
     }
-    th { color: var(--muted); font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.03em; }
+    th {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
     tr:last-child td { border-bottom: none; }
+    .old { color: var(--red); }
+    .new { color: var(--green); font-weight: 500; }
 
     code {
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.84em;
+      font-size: 0.83em;
       background: var(--code-bg);
       border: 1px solid var(--border);
       padding: 2px 6px;
       border-radius: 6px;
       color: #bae6fd;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
+
+    .code-box { position: relative; }
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 11px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
     pre {
       background: var(--code-bg);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 14px;
+      padding: 16px;
       overflow-x: auto;
-      font-size: 0.84rem;
+      font-size: 0.85rem;
       color: #cbd5e1;
-      margin-top: 10px;
+      line-height: 1.55;
     }
+
     footer {
       text-align: center;
       color: var(--muted);
@@ -184,153 +232,186 @@
 <body>
   <div class="container">
     <header>
-      <div class="badge">Branch: queuing &bull; Version 1</div>
+      <div class="pill">Branch: queuing &bull; Version 1</div>
       <h1>API Logging Framework</h1>
-      <p class="subtitle">
-        A Laravel 10 + React + Dual-PostgreSQL platform that captures every API request and response with zero customer latency, scales to 5,800+ log inserts/min on Neon, splits reads/writes across replicas, and archives monthly partitions to Parquet.
-      </p>
+      <div class="tldr">
+        <strong>In 30 seconds:</strong> Every API request is logged without making the user wait. Laravel sends the API response first, pushes the log into a local queue, inserts logs in batches of 100 into <strong>Neon PostgreSQL</strong>, reads logs from a <strong>Read Replica</strong>, and archives old months into compressed <strong>Parquet</strong> files.
+      </div>
       <div class="metrics">
         <div class="metric">
           <div class="metric-val">5,819 / min</div>
-          <div class="metric-lbl">Measured Neon batch insert rate (target: 4,000/min)</div>
+          <div class="metric-lbl">Measured Neon insert rate (target: 4,000/min)</div>
         </div>
         <div class="metric">
           <div class="metric-val">6.2x faster</div>
-          <div class="metric-lbl">Query speed after indexing (10.28 ms &rarr; 1.67 ms)</div>
+          <div class="metric-lbl">Log search speed (10.28 ms &rarr; 1.67 ms)</div>
         </div>
         <div class="metric">
           <div class="metric-val">10x fewer</div>
-          <div class="metric-lbl">Buffer pages read (112 &rarr; 11 pages)</div>
+          <div class="metric-lbl">Database pages scanned (112 &rarr; 11)</div>
         </div>
         <div class="metric">
-          <div class="metric-val">Read / Write</div>
-          <div class="metric-lbl">Split verified on Neon Primary &amp; Replica</div>
+          <div class="metric-val">Primary + Replica</div>
+          <div class="metric-lbl">Writes &amp; reads split cleanly on Neon</div>
         </div>
       </div>
     </header>
 
     <section>
-      <h2><span class="num">1</span> How the Code Works</h2>
+      <h2><span class="num">1</span> How the Code Works (Step by Step)</h2>
       <div class="card">
-        <div class="flow">
-          <div class="step">
-            <div class="step-title">1. Client Request</div>
-            <div class="step-desc">React (<code>localhost:5173</code>) sends HTTP requests via Axios to Laravel (<code>127.0.0.1:8000/api</code>).</div>
+        <div class="flow-list">
+          <div class="flow-item">
+            <span class="flow-badge">STEP 1</span>
+            <div class="flow-title">User Sends Request</div>
+            <div class="flow-desc">The React app (<code>localhost:5173</code>) sends API calls using Axios (<code>src/api/axios.js</code>) to Laravel (<code>127.0.0.1:8000/api</code>).</div>
           </div>
-          <div class="step">
-            <div class="step-title">2. Middleware Timer</div>
-            <div class="step-desc"><code>ApiLoggerMiddleware::handle()</code> records the start time and passes the request to the controller.</div>
+          <div class="flow-item">
+            <span class="flow-badge">STEP 2</span>
+            <div class="flow-title">Middleware Starts Timer</div>
+            <div class="flow-desc"><code>ApiLoggerMiddleware::handle()</code> records the start time and passes the request to the controller.</div>
           </div>
-          <div class="step">
-            <div class="step-title">3. Instant Response</div>
-            <div class="step-desc">Controller queries local <code>pgsql</code> (<code>students</code>/<code>notes</code>) and sends the response immediately.</div>
+          <div class="flow-item">
+            <span class="flow-badge">STEP 3</span>
+            <div class="flow-title">Customer Gets Instant Reply</div>
+            <div class="flow-desc">The controller uses local PostgreSQL (<code>pgsql</code>) for users/notes and returns the HTTP response immediately.</div>
           </div>
-          <div class="step">
-            <div class="step-title">4. Async Queueing</div>
-            <div class="step-desc"><code>terminate()</code> runs <em>after</em> response is sent and pushes <code>StoreApiLogJob</code> to the <code>api-logs</code> queue.</div>
+          <div class="flow-item">
+            <span class="flow-badge">STEP 4</span>
+            <div class="flow-title">Log Added to Queue</div>
+            <div class="flow-desc">After the response is sent, <code>terminate()</code> pushes <code>StoreApiLogJob</code> into the local <code>jobs</code> table (<code>api-logs</code> queue).</div>
           </div>
-          <div class="step">
-            <div class="step-title">5. Batch Insert &rarr; Neon</div>
-            <div class="step-desc"><code>logs:process-batches</code> pops 100 jobs and bulk-inserts them into Neon Primary (<code>log_pgsql</code>).</div>
+          <div class="flow-item">
+            <span class="flow-badge">STEP 5</span>
+            <div class="flow-title">Batch Insert into Neon</div>
+            <div class="flow-desc"><code>php artisan logs:process-batches</code> reads 100 queued jobs at a time and saves them in 1 bulk <code>INSERT</code> to Neon Primary.</div>
           </div>
-          <div class="step">
-            <div class="step-title">6. Replica Reads</div>
-            <div class="step-desc"><code>GET /api/logs</code> reads from Neon Read Replica(s) with <code>sticky =&gt; false</code>.</div>
+          <div class="flow-item">
+            <span class="flow-badge">STEP 6</span>
+            <div class="flow-title">Logs Read from Replica</div>
+            <div class="flow-desc"><code>GET /api/logs</code> (<code>ApiLogController::index()</code>) queries the Neon Read Replica so reads never slow down writes.</div>
           </div>
         </div>
       </div>
     </section>
 
     <section>
-      <h2><span class="num">2</span> Completed Requirements &amp; How They Were Built</h2>
+      <h2><span class="num">2</span> What Changed: Before vs. After</h2>
+      <div class="card table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Area</th>
+              <th>Before</th>
+              <th>After (What We Built)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Database Setup</strong></td>
+              <td class="old">Single local database</td>
+              <td class="new">Isolated Neon cloud DB (<code>log_pgsql</code>) for logs + local <code>pgsql</code> for app</td>
+            </tr>
+            <tr>
+              <td><strong>Log Saving</strong></td>
+              <td class="old">1 SQL insert per request</td>
+              <td class="new">Queued (<code>StoreApiLogJob</code>) + 100-row bulk inserts (5,819 inserts/min)</td>
+            </tr>
+            <tr>
+              <td><strong>Load Balancing &amp; HA</strong></td>
+              <td class="old">Single DB endpoint</td>
+              <td class="new">Neon multi-AZ HA + PgBouncer pooler + Read/Write replica splitting</td>
+            </tr>
+            <tr>
+              <td><strong>Old Log Archival</strong></td>
+              <td class="old">Slow row <code>DELETE</code> + large CSV files</td>
+              <td class="new">Monthly date partitions + compressed <code>.parquet</code> files (<code>zstd</code>)</td>
+            </tr>
+            <tr>
+              <td><strong>Query Speed</strong></td>
+              <td class="old">Full table scan (10.284 ms)</td>
+              <td class="new"><code>BRIN</code> + composite <code>B-tree</code> index (1.668 ms, 6.2x faster)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">3</span> Completed Tasks &amp; How Each Was Done</h2>
       <div class="grid-2">
         <div class="req-card">
           <div class="req-head">
-            <div class="req-title">1. Dedicated PostgreSQL Instance</div>
+            <div class="req-title">1. Dedicated PostgreSQL Server</div>
             <span class="done-pill">DONE</span>
           </div>
-          <p>Isolated API log storage from app data so logging traffic never competes with user/note queries.</p>
-          <ul>
-            <li>Configured <code>log_pgsql</code> in <code>backend/config/database.php</code> &amp; <code>backend/.env</code> pointing to <strong>Neon</strong> (<code>api-logs-db</code>, SSL required).</li>
-            <li>Added <code>$withinTransaction = false</code> to log migrations for Neon's PgBouncer pooler.</li>
-          </ul>
+          <div class="kv"><strong>Goal:</strong> Isolate heavy log writes from app tables.</div>
+          <div class="kv"><strong>How:</strong> Set up Neon (<code>api-logs-db</code>) in <code>database.php</code> &amp; <code>.env</code> with SSL, and added <code>$withinTransaction = false</code> on log migrations for Neon's pooler.</div>
+          <div class="kv"><strong>Result:</strong> App data stays local; all API logs go to Neon.</div>
         </div>
 
         <div class="req-card">
           <div class="req-head">
-            <div class="req-title">2. High-Volume Simulation (4,000+/min)</div>
+            <div class="req-title">2. Simulate 4,000+ Inserts/Min</div>
             <span class="done-pill">DONE</span>
           </div>
-          <p>Avoided per-request DB round-trips by queuing and batch-inserting logs.</p>
-          <ul>
-            <li>Updated <code>ApiLoggerMiddleware</code> to dispatch <code>StoreApiLogJob</code> to queue <code>api-logs</code>.</li>
-            <li>Built <code>logs:process-batches</code> (100-row bulk insert) &amp; <code>logs:simulate</code>.</li>
-            <li>Benchmarked <strong>4,269 logs in 44.02s (5,819 inserts/min)</strong>.</li>
-          </ul>
+          <div class="kv"><strong>Goal:</strong> Prove Neon + Laravel handle 4,000 logs/min without slowing responses.</div>
+          <div class="kv"><strong>How:</strong> Dispatched <code>StoreApiLogJob</code> to queue <code>api-logs</code>, built <code>logs:process-batches</code> &amp; <code>logs:simulate</code>.</div>
+          <div class="kv"><strong>Result:</strong> Inserted <strong>4,269 logs in 44.02s (5,819/min)</strong>.</div>
         </div>
 
         <div class="req-card">
           <div class="req-head">
-            <div class="req-title">3. Load Balancing &amp; High Availability</div>
+            <div class="req-title">3. Load Balancing &amp; HA</div>
             <span class="done-pill">DONE</span>
           </div>
-          <p>Separated read and write traffic and leveraged Neon's multi-AZ architecture.</p>
-          <ul>
-            <li>HA: Neon multi-AZ Safekeepers/Pageservers + built-in PgBouncer (<code>-pooler</code>).</li>
-            <li>LB: Laravel <code>read</code>/<code>write</code> split via <code>LOG_DB_WRITE_HOST</code> &amp; <code>LOG_DB_READ_HOSTS</code>.</li>
-            <li>Verified with <code>pg_is_in_recovery()</code>: <code>true</code> on read, <code>false</code> on write.</li>
-          </ul>
+          <div class="kv"><strong>Goal:</strong> Keep DB highly available and split read/write load.</div>
+          <div class="kv"><strong>How:</strong> Enabled Neon multi-AZ storage + PgBouncer (<code>-pooler</code>) + Laravel <code>read</code>/<code>write</code> host split in <code>database.php</code>.</div>
+          <div class="kv"><strong>Result:</strong> Verified <code>pg_is_in_recovery()</code> = <code>true</code> on reads, <code>false</code> on writes.</div>
         </div>
 
         <div class="req-card">
           <div class="req-head">
-            <div class="req-title">4. Partitioning &amp; Parquet Archival</div>
+            <div class="req-title">4. Better Archival (Parquet)</div>
             <span class="done-pill">DONE</span>
           </div>
-          <p>Replaced slow row-by-row CSV archival with date partitions and compressed Parquet.</p>
-          <ul>
-            <li>Converted <code>api_logs</code> to <code>PARTITION BY RANGE (created_at)</code> (<code>2026_11</code>, <code>2026_12</code>, <code>2027_01</code>, <code>default</code>).</li>
-            <li>Updated <code>logs:archive</code> to export <code>zstd</code>-compressed <code>.parquet</code> via <code>export_to_parquet.py</code> &amp; log SHA-256 checksums in <code>api_log_archives</code>.</li>
-          </ul>
+          <div class="kv"><strong>Goal:</strong> Replace bloated CSV files &amp; slow deletes.</div>
+          <div class="kv"><strong>How:</strong> Partitioned <code>api_logs</code> by month (<code>2026_11</code>, <code>2026_12</code>, <code>2027_01</code>, <code>default</code>) and updated <code>logs:archive</code> to export <code>.parquet</code> via <code>export_to_parquet.py</code>.</div>
+          <div class="kv"><strong>Result:</strong> Compressed archives + SHA-256 checksums tracked in <code>api_log_archives</code>.</div>
         </div>
 
         <div class="req-card">
           <div class="req-head">
-            <div class="req-title">5. Optimized Indexing Strategy</div>
+            <div class="req-title">5. Optimized Indexing</div>
             <span class="done-pill">DONE</span>
           </div>
-          <p>Added two targeted indexes matching <code>ApiLogController::index()</code> without hurting insert speed.</p>
-          <ul>
-            <li><code>BRIN</code> index on <code>created_at</code> (tiny footprint for time-series appends).</li>
-            <li>Composite <code>B-tree</code> on <code>(method, status_code, created_at DESC)</code>.</li>
-            <li><code>EXPLAIN ANALYZE</code> improved <strong>10.284 ms &rarr; 1.668 ms</strong>.</li>
-          </ul>
+          <div class="kv"><strong>Goal:</strong> Speed up <code>GET /api/logs</code> without slowing inserts.</div>
+          <div class="kv"><strong>How:</strong> Added a tiny <code>BRIN</code> index on <code>created_at</code> + composite <code>B-tree</code> on <code>(method, status_code, created_at DESC)</code>.</div>
+          <div class="kv"><strong>Result:</strong> <code>EXPLAIN ANALYZE</code> dropped from <strong>10.284 ms &rarr; 1.668 ms</strong>.</div>
         </div>
 
         <div class="req-card">
           <div class="req-head">
-            <div class="req-title">6. Deployment &amp; Ops Documentation</div>
+            <div class="req-title">6. Deployment &amp; Ops Docs</div>
             <span class="done-pill">DONE</span>
           </div>
-          <p>Prepared full operational runbooks and architecture docs for the team.</p>
-          <ul>
-            <li>Created <code>docs/POSTGRESQL_OPERATIONS.md</code> (setup, monitoring SQL, <code>pg_dump</code>/<code>pg_restore</code>, troubleshooting).</li>
-            <li>Created this visual summary (<code>docs/PROJECT_DOCUMENTATION.html</code>).</li>
-          </ul>
+          <div class="kv"><strong>Goal:</strong> Give the team clear setup, backup, and runbook docs.</div>
+          <div class="kv"><strong>How:</strong> Wrote <code>docs/POSTGRESQL_OPERATIONS.md</code> (runbook, SQL checks, <code>pg_dump</code>/<code>pg_restore</code>) and this visual guide.</div>
+          <div class="kv"><strong>Result:</strong> Ready for handoff &amp; production operations.</div>
         </div>
       </div>
     </section>
 
     <section>
-      <h2><span class="num">3</span> Libraries &amp; Technologies Used</h2>
-      <div class="card">
+      <h2><span class="num">4</span> Libraries &amp; Tools Used</h2>
+      <div class="card table-wrap">
         <table>
           <thead>
             <tr>
               <th>Layer</th>
               <th>Library / Tool</th>
               <th>Version</th>
-              <th>Purpose</th>
+              <th>What It Does</th>
             </tr>
           </thead>
           <tbody>
@@ -338,43 +419,43 @@
               <td>Backend</td>
               <td><code>laravel/framework</code> (PHP 8.2)</td>
               <td><code>^10.10</code></td>
-              <td>REST APIs, terminable middleware, queues, migrations, Artisan</td>
+              <td>REST APIs, middleware, queues, migrations, Artisan commands</td>
             </tr>
             <tr>
-              <td>Auth</td>
+              <td>Authentication</td>
               <td><code>laravel/sanctum</code></td>
               <td><code>^3.3</code></td>
-              <td>Bearer token authentication for Students &amp; Professors</td>
+              <td>API token login for Students &amp; Professors</td>
             </tr>
             <tr>
-              <td>HTTP / CLI</td>
+              <td>HTTP &amp; CLI</td>
               <td><code>guzzlehttp/guzzle</code>, <code>laravel/tinker</code></td>
               <td><code>^7.2</code> / <code>^2.8</code></td>
-              <td>HTTP client &amp; interactive REPL</td>
+              <td>HTTP client &amp; interactive Laravel shell</td>
             </tr>
             <tr>
               <td>Frontend</td>
               <td><code>react</code>, <code>react-dom</code>, <code>react-router-dom</code></td>
               <td><code>^19.2</code> / <code>^7.18</code></td>
-              <td>SPA pages (Login, Dashboard, Notes CRUD)</td>
+              <td>UI pages (Login, Dashboard, Notes CRUD)</td>
             </tr>
             <tr>
               <td>API Client</td>
               <td><code>axios</code></td>
               <td><code>^1.18.0</code></td>
-              <td>Frontend HTTP client with automatic Bearer token header</td>
+              <td>Sends API calls with automatic Bearer token</td>
             </tr>
             <tr>
-              <td>Build / Lint</td>
+              <td>Build &amp; Quality</td>
               <td><code>vite</code>, <code>eslint</code>, <code>laravel/pint</code>, <code>phpunit</code></td>
               <td><code>^8.0</code> / <code>^10.3</code></td>
-              <td>Dev server, bundling, code style, testing</td>
+              <td>Frontend bundler, JS/PHP linting, and unit tests</td>
             </tr>
             <tr>
-              <td>Archival / Load</td>
+              <td>Archival &amp; Load Test</td>
               <td>Python 3.13: <code>pyarrow</code>, <code>requests</code></td>
               <td>Installed</td>
-              <td><code>zstd</code> Parquet export &amp; concurrent load test (<code>performance_test.py</code>)</td>
+              <td>Creates <code>zstd</code> Parquet files &amp; runs load tests (<code>performance_test.py</code>)</td>
             </tr>
             <tr>
               <td>Databases</td>
@@ -388,9 +469,10 @@
     </section>
 
     <section>
-      <h2><span class="num">4</span> Quick Run Commands</h2>
-      <div class="card">
-        <pre># 1. Run Neon log migrations (partitioning + indexes)
+      <h2><span class="num">5</span> Quick Commands</h2>
+      <div class="card code-box">
+        <button class="copy-btn" onclick="copyCmds(this)">Copy</button>
+        <pre id="cmds"># 1. Run Neon log migrations (partitioning + indexes)
 cd backend
 php artisan migrate --database=log_pgsql --path=database/migrations_log --force
 
@@ -406,8 +488,18 @@ php artisan logs:archive --days=90 --format=parquet</pre>
     </section>
 
     <footer>
-      API Logging Framework &bull; Branch <code>queuing</code> &bull; Generated for project handoff &amp; review
+      API Logging Framework &bull; Branch <code>queuing</code> &bull; Operational details in <code>docs/POSTGRESQL_OPERATIONS.md</code>
     </footer>
   </div>
+
+  <script>
+    function copyCmds(btn) {
+      const text = document.getElementById("cmds").innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = "Copied!";
+        setTimeout(() => (btn.textContent = "Copy"), 1500);
+      });
+    }
+  </script>
 </body>
 </html>
